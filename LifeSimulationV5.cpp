@@ -16,7 +16,7 @@ struct Square {
 };
 
 
-const long TSIZEE = 50;
+const long TSIZEE = 60; //This is grid size, change to any number you'd like
 bool TABLE[TSIZEE][TSIZEE];
 bool TABLE2[TSIZEE][TSIZEE];
 vector<Square> LIVE_SQUARES;
@@ -45,7 +45,7 @@ int main() {
 	{
 		DoStuff();
 		PrintTable();
-		Sleep(500);//can change it to whatever
+		Sleep(500);
 	}
 	return 0;
 }
@@ -71,7 +71,6 @@ void CreateRandomStartup() {
 		for (size_t k = 0; k < TSIZEE; k++)
 			TABLE2[i][k] = TABLE[i][k];
 
-
 }
 long SurroundingCells(Square* square) {
 	long numOfCells = 0;
@@ -86,12 +85,28 @@ long SurroundingCells(Square* square) {
 			{
 				if (TABLE[posx][posy])
 				{
-					if (!(posx == square->PosX && posy == square->PosY))
-					{
-						numOfCells++;
-					}
+					__asm {
+						mov ebx, posx
+						mov esi, posy
+						mov eax, square
+
+						cmp ebx, [eax]Square.PosX
+						je sus
+
+						jmp actualstuff
+
+						sus :
+
+						cmp esi, [eax]Square.PosY
+							je eend
+
+							actualstuff :
+
+						add numOfCells, 1
+
+							eend :
+					};
 				}
-				
 			}
 		}
 	}
@@ -111,12 +126,28 @@ long SurroundingCells(long PosXX, long PosYY) {
 			{
 				if (TABLE[posx][posy])
 				{
-					if (!(posx == PosXX && posy == PosYY))
-					{
-						numOfCells++;
-					}
+					__asm {
+						mov ebx, posx
+						mov esi, posy
+						mov eax, PosXX
+						cmp ebx, eax
+						je sus
+
+						jmp actualstuff
+
+						sus :
+						mov eax, PosYY
+							cmp esi, eax
+							je eend
+
+							actualstuff :
+						add numOfCells, 1
+
+							eend :
+					};
 
 				}
+
 			}
 		}
 	}

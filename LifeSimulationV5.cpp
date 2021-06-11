@@ -45,7 +45,8 @@ int main() {
 	{
 		DoStuff();
 		PrintTable();
-		Sleep(500);
+		Sleep(500); //this is the amount of time (in miliseconds) the process awaits, in other words:
+				//if you raise it to the power of -1 you get the frequency of the console updates
 	}
 	return 0;
 }
